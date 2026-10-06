@@ -132,7 +132,7 @@ static void free_insert(void *bp)
         SUCC(bp) = NULL;
     }
     else {
-        SUCC(last_listp) = bp;
+        SUCC(last_listp) = bp; /* 기존 꼬리의 다음에 새 block을 연결해라*/
         PRED(bp) = last_listp;
         SUCC(bp) = NULL;
         last_listp = bp;
@@ -183,7 +183,7 @@ void *mm_malloc(size_t size)
     if (size == 0)
         return NULL;
 
-    if (size <= DSIZE) {
+    if (size <= DSIZE) { /* 최소블록을 24바이트로*/
         asize = 3 * DSIZE;
     }
     else {
@@ -277,7 +277,7 @@ static void *find_fit(size_t asize)
     */
     char *bp;
     for (bp = free_listp; bp != NULL; bp = SUCC(bp)) {
-        if((GET_SIZE(HDRP(bp))>= asize ))
+        if((GET_SIZE(HDRP(bp))>= asize))
             return bp;
     }
     return NULL;
